@@ -18,7 +18,7 @@
              @if ($errors) <p class="help-block">{{ $errors->first('title') }}</p> @endif 
              
              <label for="date">Date :</label> <br />
-             <input name="date" id="date" type="date" value="{{ old('date') }}" /> <br />
+             <input name="date" id="date" type="date" value="{{ (old('date') != null) ? old('date') : date('Y-m-d') }}" /> <br />
              @if ($errors) <p class="help-block">{{ $errors->first('date') }}</p> @endif 
              
              <label for="category">Categorie :</label> <br />
