@@ -7,7 +7,13 @@
 
     </head>
     <body>
-       Add Someting
+       <h2>Mes Depenses</h2>
+       <ul>
+           <li><a href="{{route('add-expense')}}">Add Expense</a></li>
+           <li><a href="{{route('period')}}">View Expenses</a></li>
+           <li><a href="#">Edit Categories</a></li>
+       </ul>
+       
        @if (Session::has('message'))
             <p>{!! session('message') !!}</p>
        @endif

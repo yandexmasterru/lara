@@ -7,6 +7,13 @@
 
     </head>
     <body>
-       Add Someting
+        <h2>Expenses</h2>
+        @foreach ($expenses as $expense)
+            {{$expense->title}} - {{$expense->value}} € <br /> 
+            {{$expense->date}} <br />
+            =========================
+            <br />
+            <br />
+        @endforeach
     </body>
 </html>

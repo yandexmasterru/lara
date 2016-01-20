@@ -11,9 +11,13 @@
 |
 */
 Route::group(['middleware' => ['web']], function () {
-    Route::get('/', 'ExpenseController@showIndex');
-    Route::get('/add', 'ExpenseController@showAdd');
-    Route::post('/add', 'ExpenseController@postAdd')->name('add-expense');
+    Route::get('/', 'ExpenseController@showIndex')->name('home');
+    
+    Route::get('/period/', 'ExpenseController@showPeriod')->name('period');
+    Route::get('/list/{period}', 'ExpenseController@showList')->name('list-expenses');
+    
+    Route::get('/add', 'ExpenseController@showAdd')->name('add-expense');
+    Route::post('/add', 'ExpenseController@postAdd')->name('post-expense');
 });
 
 /*

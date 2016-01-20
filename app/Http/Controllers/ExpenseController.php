@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Expense;
+use Carbon\Carbon;
 use Validator;
+use DateTime;
 use App\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -13,6 +15,48 @@ class ExpenseController extends Controller
     public function showIndex()
     {
        return view('expense.home');
+    }
+    
+    public function showPeriod()
+    {
+        return view('expense.period');
+    }
+    
+    public function showList($period)
+    {
+        if($period == 'week') {
+            $expenses = Expense::orderBy('date', 'DESC')
+                ->whereBetween('date', [
+                    Carbon::today()->subWeek()->toDateString(), 
+                    Carbon::today()->toDateString()
+                ])
+                ->get();
+        } elseif($period == 'month') {
+            $expenses = Expense::orderBy('date', 'DESC')
+                ->whereBetween('date', [
+                    Carbon::today()->subMonth()->toDateString(), 
+                    Carbon::today()->toDateString()
+                ])
+                ->get(); 
+        } elseif($period == 'year') {
+            $expenses = Expense::orderBy('date', 'DESC')
+                ->whereBetween('date', [
+                    Carbon::today()->subYear()->toDateString(), 
+                    Carbon::today()->toDateString()
+                ])
+                ->get(); 
+        } else {
+           $expenses = Expense::orderBy('date', 'DESC')
+                ->where('date', '>=', new DateTime('-1 years'))
+                ->get();  
+        }
+        
+        
+        $data = [
+            "expenses" => $expenses,
+        ];
+        
+        return view('expense.list', $data);
     }
     
     public function showAdd()
@@ -54,9 +98,4 @@ class ExpenseController extends Controller
         
     }
     
-    public function showList()
-    {
-        $data = [];
-        return view('expense.add', $data);
-    }
 }
