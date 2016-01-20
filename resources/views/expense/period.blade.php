@@ -7,6 +7,7 @@
 
     </head>
     <body>
+        <a href="{{route('home')}}">Home</a>
         <h2>Expenses Period</h2>
         <ul>
            <li><a href="{{route('list-expenses', ["period" => 'week'])}}">Week</a></li>

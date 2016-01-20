@@ -29,34 +29,85 @@ class ExpenseController extends Controller
                 ->whereBetween('date', [
                     Carbon::today()->subWeek()->toDateString(), 
                     Carbon::today()->toDateString()
-                ])
-                ->get();
+                ])->get();
         } elseif($period == 'month') {
             $expenses = Expense::orderBy('date', 'DESC')
                 ->whereBetween('date', [
                     Carbon::today()->subMonth()->toDateString(), 
                     Carbon::today()->toDateString()
-                ])
-                ->get(); 
+                ])->get(); 
         } elseif($period == 'year') {
             $expenses = Expense::orderBy('date', 'DESC')
                 ->whereBetween('date', [
                     Carbon::today()->subYear()->toDateString(), 
                     Carbon::today()->toDateString()
-                ])
-                ->get(); 
+                ])->get(); 
         } else {
            $expenses = Expense::orderBy('date', 'DESC')
-                ->where('date', '>=', new DateTime('-1 years'))
-                ->get();  
+                ->whereBetween('date', [
+                    Carbon::today()->subYear()->toDateString(), 
+                    Carbon::today()->toDateString()
+                ])->get();  
+        }
+        
+        
+        $expensesByBudget = $expenses->groupBy('category_id');
+        $categories = Category::where('budget', '>', '0')->get();
+        $expensesByBudget = $expensesByBudget->toArray();
+        $categories = $categories->groupBy('id')->toArray();
+        $budgetsFormat = [];
+        
+        foreach($categories as $category) {
+            $title = $category[0]['title'];
+            $budget = $this->budgetAjust($category[0]['budget'], $period);
+            $value = collect($expensesByBudget[ $category[0]['id'] ])->sum('value');
+            $percent = $this->toPercent($value, $budget);
+            $color = $this->budgetColor($percent);
+            array_push($budgetsFormat, [
+                "title" => $title,
+                "budget" => $budget,
+                "value" => $value,
+                "percent" => $percent,
+                "color" => $color
+            ]);
         }
         
         
         $data = [
             "expenses" => $expenses,
+            "budgets" => $budgetsFormat,
+            "total" => $expenses->sum('value')
         ];
         
         return view('expense.list', $data);
+    }
+    
+    private function budgetAjust($value, $period) {
+        if($period == 'week') {
+            return round($value / 4);
+        } elseif($period == 'month') {
+            return $value;
+        } elseif($period == 'year') {
+            return round($value * 12);
+        } else {
+            return round($value * 12);
+        }
+    }
+    
+    private function toPercent($a, $b) {
+        return round((100 * $a) / $b);
+    }
+    
+    private function budgetColor($value) {
+        if($value < 25) {
+            return 'green';
+        } elseif ($value >= 25 && $value <= 50) {
+            return 'yellow';
+        } elseif ($value >= 50 && $value <= 75) {
+            return 'yellow';
+        } else {
+            return 'red';
+        }
     }
     
     public function showAdd()
