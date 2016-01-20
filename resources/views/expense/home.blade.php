@@ -11,7 +11,7 @@
        <ul>
            <li><a href="{{route('add-expense')}}">Add Expense</a></li>
            <li><a href="{{route('period')}}">View Expenses</a></li>
-           <li><a href="#">Edit Categories</a></li>
+           <li><a href="#0">Edit Categories</a></li>
        </ul>
        
        @if (Session::has('message'))

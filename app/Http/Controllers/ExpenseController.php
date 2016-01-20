@@ -75,7 +75,7 @@ class ExpenseController extends Controller
             'title' => 'required|min:1',
             'category' => 'required|numeric|exists:categories,id',
             'value' => 'required|numeric',
-            'date' => 'required|date'
+            'date' => 'required|date|before:tomorrow'
         ]);
     
         if ($v->fails())
