@@ -145,7 +145,7 @@ class ExpenseController extends Controller
         
         
         // Redirect
-        return redirect('/')->with('message', 'Expense added.');
+        return redirect('/')->with('message', 'Expense added');
         
     }
     

@@ -1,18 +1,13 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Laravel</title>
+@extends('layouts.master')
 
-        <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
+@section('title', 'Choose period')
 
-    </head>
-    <body>
-        <a href="{{route('home')}}">Home</a>
-        <h2>Expenses Period</h2>
-        <ul>
-           <li><a href="{{route('list-expenses', ["period" => 'week'])}}">Week</a></li>
-           <li><a href="{{route('list-expenses', ["period" => 'month'])}}">Month</a></li>
-           <li><a href="{{route('list-expenses', ["period" => 'year'])}}">Year</a></li>
-       </ul>
-    </body>
-</html>
+@section('content')
+    <h3 class="text-center">Choose Period</h3>
+    <a class="block button button-primary" href="{{route('list-expenses', ["period" => 'week'])}}">Week</a></li>
+    <a class="block button button-primary" href="{{route('list-expenses', ["period" => 'month'])}}">Month</a></li>
+    <a class="block button button-primary" href="{{route('list-expenses', ["period" => 'year'])}}">Year</a></li>
+    <a href="{{route('home')}}" class="button block">Cancel</a>
+  
+@endsection
+

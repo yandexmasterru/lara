@@ -1,21 +1,15 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Laravel</title>
+@extends('layouts.master')
 
-        <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
+@section('title', 'Home')
 
-    </head>
-    <body>
-       <h2>Mes Depenses</h2>
-       <ul>
-           <li><a href="{{route('add-expense')}}">Add Expense</a></li>
-           <li><a href="{{route('period')}}">View Expenses</a></li>
-           <li><a href="#0">Edit Categories</a></li>
-       </ul>
-       
-       @if (Session::has('message'))
-            <p>{!! session('message') !!}</p>
-       @endif
-    </body>
-</html>
+@section('content')
+   <!--<h3 class="text-center">Mes Depenses</h3>-->
+    @if (Session::has('message'))
+        <p class="info-success button block">{!! session('message') !!}</p>
+    @endif
+   <a class="block button button-primary" href="{{route('add-expense')}}">Add Expense</a>
+   <a class="block button button-primary" href="{{route('period')}}">View Expenses</a>
+   <a class="block button button-primary" href="#0">Edit Categories</a>
+  
+@endsection
+

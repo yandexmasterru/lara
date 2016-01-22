@@ -1,0 +1,22 @@
+.block {
+    display: block;
+}
+.text-center {
+    text-align: center;
+}
+.black-link {
+    color: #111;
+}
+input, select {
+    display: block;
+    width: 100%;
+}
+.help-block {
+    color: #E25041;
+}
+.info-success, .info-success:hover {
+    color: #41A85F;
+    background: transparent;
+    border: 2px solid #41A85F;
+    cursor: default;
+}
