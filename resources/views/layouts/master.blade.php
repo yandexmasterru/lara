@@ -19,9 +19,9 @@
 
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href="css/normalize.css">
-  <link rel="stylesheet" href="css/skeleton.css">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/skeleton.css">
+  <link rel="stylesheet" href="/css/style.css">
 
 </head>
 <body>
@@ -32,7 +32,7 @@
             <div class="twelve columns" style="margin-top: 15%">
                 <div class="image text-center">
                     <a href="{{route('home')}}" class="black-link">
-                        <img src="images/icon.png" height="60px" alt="Expenses"></img>
+                        <img src="/images/icon.png" height="60px" alt="Expenses"></img>
                         <h4>Expenses</h4>
                     </a>
                 </div>

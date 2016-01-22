@@ -24,29 +24,39 @@ class ExpenseController extends Controller
     
     public function showList($period)
     {
+        $today = Carbon::today();
+        $today_day_week = $today->dayOfWeek;
+        $today_day_month = $today->day;
+        $today_day_year = $today->dayOfYear;
+        
+        $date_today = Carbon::today()->toDateString();
+        $date_week = Carbon::today()->subDays($today_day_week)->addDay()->toDateString();
+        $date_month = Carbon::today()->subDays($today_day_month)->addDay()->toDateString();
+        $date_year = Carbon::today()->subDays($today_day_year)->toDateString();
+
         if($period == 'week') {
             $expenses = Expense::orderBy('date', 'DESC')
                 ->whereBetween('date', [
-                    Carbon::today()->subWeek()->toDateString(), 
-                    Carbon::today()->toDateString()
+                    $date_week, 
+                    $date_today
                 ])->get();
         } elseif($period == 'month') {
             $expenses = Expense::orderBy('date', 'DESC')
                 ->whereBetween('date', [
-                    Carbon::today()->subMonth()->toDateString(), 
-                    Carbon::today()->toDateString()
+                    $date_month, 
+                    $date_today
                 ])->get(); 
         } elseif($period == 'year') {
             $expenses = Expense::orderBy('date', 'DESC')
                 ->whereBetween('date', [
-                    Carbon::today()->subYear()->toDateString(), 
-                    Carbon::today()->toDateString()
+                    $date_year, 
+                    $date_today
                 ])->get(); 
         } else {
            $expenses = Expense::orderBy('date', 'DESC')
                 ->whereBetween('date', [
-                    Carbon::today()->subYear()->toDateString(), 
-                    Carbon::today()->toDateString()
+                    $date_year, 
+                    $date_today
                 ])->get();  
         }
         
@@ -74,9 +84,10 @@ class ExpenseController extends Controller
         
         
         $data = [
-            "expenses" => $expenses,
-            "budgets" => $budgetsFormat,
-            "total" => $expenses->sum('value')
+            "expenses"  => $expenses,
+            "period"    => $period,
+            "budgets"   => $budgetsFormat,
+            "total"     => $expenses->sum('value')
         ];
         
         return view('expense.list', $data);
@@ -100,13 +111,13 @@ class ExpenseController extends Controller
     
     private function budgetColor($value) {
         if($value < 25) {
-            return 'green';
+            return '#41A85F'; // GREEN COLOR
         } elseif ($value >= 25 && $value <= 50) {
-            return 'yellow';
+            return '#FAC51C'; // YELLOW COLOR
         } elseif ($value >= 50 && $value <= 75) {
-            return 'yellow';
+            return '#F37934'; // ORANGE COLOR
         } else {
-            return 'red';
+            return '#D14841'; // RED COLOR
         }
     }
     

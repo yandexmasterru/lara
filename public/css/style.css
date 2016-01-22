@@ -20,3 +20,17 @@ input, select {
     border: 2px solid #41A85F;
     cursor: default;
 }
+.progress-wrap {
+    width: 100%;
+    height: 30px;
+    background: #E1E1E1;
+    border-radius: 15px;
+    display: block;
+    overflow: hidden;
+}
+.progress-bar {
+    max-width: 100%;
+    height: 30px;
+    display: block;
+    border-radius: 15px;
+}
