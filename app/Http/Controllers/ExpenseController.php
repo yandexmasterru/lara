@@ -67,19 +67,26 @@ class ExpenseController extends Controller
         $categories = $categories->groupBy('id')->toArray();
         $budgetsFormat = [];
         
+        
+        
         foreach($categories as $category) {
-            $title = $category[0]['title'];
-            $budget = $this->budgetAjust($category[0]['budget'], $period);
-            $value = collect($expensesByBudget[ $category[0]['id'] ])->sum('value');
-            $percent = $this->toPercent($value, $budget);
-            $color = $this->budgetColor($percent);
-            array_push($budgetsFormat, [
-                "title" => $title,
-                "budget" => $budget,
-                "value" => $value,
-                "percent" => $percent,
-                "color" => $color
-            ]);
+            if(isset($expensesByBudget[ $category[0]['id'] ])) {
+                $title = $category[0]['title'];
+                $budget = $this->budgetAjust($category[0]['budget'], $period);
+                $amount = 0;
+                foreach($expensesByBudget[ $category[0]['id'] ] as $expense) {
+                    $amount += $expense['amount'];
+                }
+                $percent = $this->toPercent($amount, $budget);
+                $color = $this->budgetColor($percent);
+                array_push($budgetsFormat, [
+                    "title" => $title,
+                    "budget" => $budget,
+                    "amount" => $amount,
+                    "percent" => $percent,
+                    "color" => $color
+                ]);
+            }
         }
         
         
@@ -87,21 +94,21 @@ class ExpenseController extends Controller
             "expenses"  => $expenses,
             "period"    => $period,
             "budgets"   => $budgetsFormat,
-            "total"     => $expenses->sum('value')
+            "total"     => $expenses->sum('amount')
         ];
         
         return view('expense.list', $data);
     }
     
-    private function budgetAjust($value, $period) {
+    private function budgetAjust($amount, $period) {
         if($period == 'week') {
-            return round($value / 4);
+            return round($amount / 4);
         } elseif($period == 'month') {
-            return $value;
+            return $amount;
         } elseif($period == 'year') {
-            return round($value * 12);
+            return round($amount * 12);
         } else {
-            return round($value * 12);
+            return round($amount * 12);
         }
     }
     
@@ -109,12 +116,12 @@ class ExpenseController extends Controller
         return round((100 * $a) / $b);
     }
     
-    private function budgetColor($value) {
-        if($value < 25) {
+    private function budgetColor($amount) {
+        if($amount < 25) {
             return '#41A85F'; // GREEN COLOR
-        } elseif ($value >= 25 && $value <= 50) {
+        } elseif ($amount >= 25 && $amount <= 50) {
             return '#FAC51C'; // YELLOW COLOR
-        } elseif ($value >= 50 && $value <= 75) {
+        } elseif ($amount >= 50 && $amount <= 75) {
             return '#F37934'; // ORANGE COLOR
         } else {
             return '#D14841'; // RED COLOR
@@ -136,7 +143,7 @@ class ExpenseController extends Controller
         $v = Validator::make($request->all(), [
             'title' => 'required|min:1',
             'category' => 'required|numeric|exists:categories,id',
-            'value' => 'required|numeric',
+            'amount' => 'required|numeric',
             'date' => 'required|date|before:tomorrow'
         ]);
     
@@ -150,7 +157,7 @@ class ExpenseController extends Controller
         $expense = new Expense;
         $expense->title = $request->input('title');
         $expense->category_id = $request->input('category');
-        $expense->value = $request->input('value');
+        $expense->amount = $request->input('amount');
         $expense->date = $request->input('date');
         $expense->save();
         

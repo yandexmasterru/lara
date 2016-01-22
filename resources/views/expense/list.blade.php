@@ -11,7 +11,7 @@
             <div class="progress-wrap progress">
               <div class="progress-bar progress" style="background: {{$budget['color']}}; width: {{$budget['percent']}}%;"></div>
             </div>
-            {{$budget['value']}}
+            {{$budget['amount']}}
             / 
             {{$budget['budget']}} € <br />
             <br />
@@ -24,7 +24,7 @@
       <thead>
         <tr>
           <th>Expense</th>
-          <th>Value</th>
+          <th>Amount</th>
         </tr>
       </thead>
       <tbody>
@@ -37,7 +37,7 @@
               - 
               <span style="border-bottom: 2px solid {{$expense->category->color}}">{{$expense->category->title}}</span>
           </td>
-          <td>{{$expense->value}}€</td>
+          <td>{{$expense->amount}}€</td>
         </tr>
         @endforeach
       </tbody>
